@@ -60,3 +60,6 @@ p{
 .black{
     fill: black;
 }
+.infoDiv{
+    font-size: 2rem;
+}

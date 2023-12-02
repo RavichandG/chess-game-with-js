@@ -87,6 +87,7 @@ function dropFun(e)
      {
       e.target.parentNode.appendChild(draggedElement);
       e.target.remove();
+      checkForWin()
       changePlayer();
       return
      }
@@ -334,4 +335,19 @@ function NormalId()
   squares.forEach((sq,i)=>{
     sq.setAttribute("square-id",i)
   })
+}
+
+/* check for win */
+
+function checkForWin(){
+  const both_kings = Array.from(document.querySelectorAll("#king"));
+  console.log(both_kings)
+
+  if(both_kings.length === 1)
+  {
+    let winner = both_kings[0].firstChild.className;
+    console.log("winner ",winner.baseVal);
+    info.textContent = `${winner.baseVal} wins`
+  }
+
 }
