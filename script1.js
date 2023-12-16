@@ -73,10 +73,10 @@ function dragOverFun(e)
 function dropFun(e)
 {
   e.stopPropagation();
-
-  const taken = e.target.classList.contains("piece");
+    console.log("target",e.target)
+  const taken = e.target.classList.contains("square")?e.target.firstChild?.classList.contains("piece"):e.target.classList.contains("piece");
   const opponent_turn = player_turn==="black"?"white":"black";
-  const opponent_taken = e.target.firstChild?.classList.contains(opponent_turn);
+  const opponent_taken = e.target.classList.contains("square")?e.target.firstChild?.firstChild.classList.contains(opponent_turn):e.target.firstChild?.classList.contains(opponent_turn);
   const correct_turn = draggedElement.firstChild.classList.contains(player_turn);
   const valid = validFun(e.target);
   console.log(valid)
@@ -86,9 +86,13 @@ function dropFun(e)
      if(opponent_taken && valid)
      {
       e.target.parentNode.appendChild(draggedElement);
-      e.target.remove();
+      e.target.classList.contains("square")?e.target.firstChild.remove():e.target.remove();
       checkForWin()
-      changePlayer();
+      
+      console.log("valid",valid);
+    console.log("opp taken",opponent_taken)
+    console.log("taken",taken)
+    changePlayer();
       return
      }
      if(!opponent_taken && taken)
@@ -100,20 +104,22 @@ function dropFun(e)
      }
      if (valid && !taken) {
        e.target.append(draggedElement);
+       
+       console.log("valid",valid);
+       console.log("opp taken",opponent_taken)
+       console.log("taken",taken)
        changePlayer();
        return;
      }
   }
-
+    
   console.log(e.target)
 
 }
 
 function validFun(target)
 {
-   const target_id =
-     Number(target.getAttribute("square-id")) ||
-     Number(target.parentNode.getAttribute("square-id"));
+   const target_id = Number(target.getAttribute("square-id")) || Number(target.parentNode.getAttribute("square-id"));
 
    const start_id = Number(startPosition);
    const piece = draggedElement.id;
@@ -124,7 +130,7 @@ function validFun(target)
 
    switch (piece) {
      case "pawn":
-       let start_positions = [8, 9, 10, 11, 12, 13, 14, 15];
+       const start_positions = [8, 9, 10, 11, 12, 13, 14, 15];
        if (
          (start_positions.includes(start_id) && start_id + 16 === target_id) ||
          start_id + 8 === target_id ||
@@ -224,7 +230,7 @@ function validFun(target)
      case "queen":
       if(
         /* rook moves */  
-        start_id + width === target_id ||
+        (start_id + width === target_id) ||
         (start_id + width * 2 === target_id && !document.querySelector(`[square-id="${start_id + width}"]`).firstChild)||
         (start_id + width * 3 === target_id && !document.querySelector(`[square-id="${start_id + width}"]`).firstChild && !document.querySelector(`[square-id="${start_id + width * 2}"]`).firstChild) ||
         (start_id + width * 4 === target_id && !document.querySelector(`[square-id="${start_id + width}"]`).firstChild && !document.querySelector(`[square-id="${start_id + width * 2}"]`).firstChild && !document.querySelector(`[square-id="${start_id + width * 3}"]`).firstChild)||
@@ -232,7 +238,7 @@ function validFun(target)
         (start_id + width * 6 === target_id && !document.querySelector(`[square-id="${start_id + width}"]`).firstChild && !document.querySelector(`[square-id="${start_id + width * 2}"]`).firstChild && !document.querySelector(`[square-id="${start_id + width * 3}"]`).firstChild && !document.querySelector(`[square-id="${start_id + width * 4}"]`).firstChild && !document.querySelector(`[square-id="${start_id + width * 5}"]`).firstChild)||
         (start_id + width * 7 === target_id && !document.querySelector(`[square-id="${start_id + width}"]`).firstChild && !document.querySelector(`[square-id="${start_id + width * 2}"]`).firstChild && !document.querySelector(`[square-id="${start_id + width * 3}"]`).firstChild && !document.querySelector(`[square-id="${start_id + width * 4}"]`).firstChild && !document.querySelector(`[square-id="${start_id + width * 5}"]`).firstChild && !document.querySelector(`[square-id="${start_id + width * 6}"]`).firstChild) ||
 
-         start_id - width === target_id ||
+         (start_id - width === target_id) ||
         (start_id - width * 2 === target_id && !document.querySelector(`[square-id="${start_id - width}"]`).firstChild)||
         (start_id - width * 3 === target_id && !document.querySelector(`[square-id="${start_id - width}"]`).firstChild && !document.querySelector(`[square-id="${start_id - width * 2}"]`).firstChild) ||
         (start_id - width * 4 === target_id && !document.querySelector(`[square-id="${start_id - width}"]`).firstChild && !document.querySelector(`[square-id="${start_id - width * 2}"]`).firstChild && !document.querySelector(`[square-id="${start_id - width * 3}"]`).firstChild)||
@@ -240,7 +246,7 @@ function validFun(target)
         (start_id - width * 6 === target_id && !document.querySelector(`[square-id="${start_id - width}"]`).firstChild && !document.querySelector(`[square-id="${start_id - width * 2}"]`).firstChild && !document.querySelector(`[square-id="${start_id - width * 3}"]`).firstChild && !document.querySelector(`[square-id="${start_id - width * 4}"]`).firstChild && !document.querySelector(`[square-id="${start_id - width * 5}"]`).firstChild)||
         (start_id - width * 7 === target_id && !document.querySelector(`[square-id="${start_id - width}"]`).firstChild && !document.querySelector(`[square-id="${start_id - width * 2}"]`).firstChild && !document.querySelector(`[square-id="${start_id - width * 3}"]`).firstChild && !document.querySelector(`[square-id="${start_id - width * 4}"]`).firstChild && !document.querySelector(`[square-id="${start_id - width * 5}"]`).firstChild && !document.querySelector(`[square-id="${start_id - width * 6}"]`).firstChild) ||
 
-        start_id + 1 === target_id ||
+        (start_id + 1 === target_id) ||
         (start_id + 2 === target_id && !document.querySelector(`[square-id="${start_id + 1}"]`).firstChild)||
         (start_id + 3 === target_id && !document.querySelector(`[square-id="${start_id + 1}"]`).firstChild && !document.querySelector(`[square-id="${start_id + 2}"]`).firstChild) ||
         (start_id + 4 === target_id && !document.querySelector(`[square-id="${start_id + 1}"]`).firstChild && !document.querySelector(`[square-id="${start_id + 2}"]`).firstChild && !document.querySelector(`[square-id="${start_id + 3}"]`).firstChild)||
@@ -248,7 +254,7 @@ function validFun(target)
         (start_id + 6 === target_id && !document.querySelector(`[square-id="${start_id + 1}"]`).firstChild && !document.querySelector(`[square-id="${start_id + 2}"]`).firstChild && !document.querySelector(`[square-id="${start_id + 3}"]`).firstChild && !document.querySelector(`[square-id="${start_id + 4}"]`).firstChild && !document.querySelector(`[square-id="${start_id + 5}"]`).firstChild)||
         (start_id + 7 === target_id && !document.querySelector(`[square-id="${start_id + 1}"]`).firstChild && !document.querySelector(`[square-id="${start_id + 2}"]`).firstChild && !document.querySelector(`[square-id="${start_id + 3}"]`).firstChild && !document.querySelector(`[square-id="${start_id + 4}"]`).firstChild && !document.querySelector(`[square-id="${start_id + 5}"]`).firstChild && !document.querySelector(`[square-id="${start_id + 6}"]`).firstChild) ||
 
-         start_id - 1 === target_id ||
+        (start_id - 1 === target_id) ||
         (start_id - 2 === target_id && !document.querySelector(`[square-id="${start_id - 1}"]`).firstChild)||
         (start_id - 3 === target_id && !document.querySelector(`[square-id="${start_id - 1}"]`).firstChild && !document.querySelector(`[square-id="${start_id - 2}"]`).firstChild) ||
         (start_id - 4 === target_id && !document.querySelector(`[square-id="${start_id - 1}"]`).firstChild && !document.querySelector(`[square-id="${start_id - 2}"]`).firstChild && !document.querySelector(`[square-id="${start_id - 3}"]`).firstChild)||
