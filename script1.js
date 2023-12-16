@@ -258,7 +258,7 @@ function validFun(target)
 
       /* bishop moves */
 
-      start_id + width + 1 === target_id ||
+      (start_id + width + 1 === target_id) ||
       (start_id + width * 2 + 2 === target_id &&!document.querySelector(`[square-id="${start_id + width + 1}"]`).firstChild) ||
       (start_id + width * 3 + 3 === target_id &&!document.querySelector(`[square-id="${start_id + width + 1}"]`).firstChild &&!document.querySelector(`[square-id="${start_id + width * 2 + 2}"]`).firstChild) ||
       (start_id + width * 4 + 4 === target_id &&!document.querySelector(`[square-id="${start_id + width + 1}"]`).firstChild &&!document.querySelector(`[square-id="${start_id + width * 2 + 2}"]`).firstChild &&!document.querySelector(`[square-id="${start_id + width * 3 + 3}"]`).firstChild) ||
